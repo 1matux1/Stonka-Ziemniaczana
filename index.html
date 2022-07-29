@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stonka Ziemniaczana</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <link rel="shortcut icon" href="res/favicon.ico" type="image/x-icon">
+    <script>
+        function setCookie(cname, cvalue, exdays) {
+        const d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        let expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";         
+        }
+
+        function getCookie(cname) {
+        let name = cname + "=";
+        let decodedCookie = decodeURIComponent(document.cookie);
+        let ca = decodedCookie.split(';');
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+        }
+            return "";
+        }
+
+        function checkCookie() {
+        let stonka = getCookie("stonka");
+        if (stonka!= "") {
+            const screens = document.querySelectorAll("div");
+            screens[0].classList.toggle("hidden");
+            screens[1].classList.toggle("hidden");
+        } else {
+        setCookie('stonka', 1, 100)
+        }
+    }
+
+    
+    var colors = new Array(
+  [62,35,255],
+  [60,255,60],
+  [255,35,98],
+  [45,175,230],
+  [255,0,255],
+  [255,128,0]);
+
+var step = 0;
+
+var colorIndices = [0,1,2,3];
+
+var gradientSpeed = 0.2;
+
+function updateGradient()
+{
+  
+  if ( $===undefined ) return;
+  
+var c0_0 = colors[colorIndices[0]];
+var c0_1 = colors[colorIndices[1]];
+var c1_0 = colors[colorIndices[2]];
+var c1_1 = colors[colorIndices[3]];
+
+var istep = 1 - step;
+var r1 = Math.round(istep * c0_0[0] + step * c0_1[0]);
+var g1 = Math.round(istep * c0_0[1] + step * c0_1[1]);
+var b1 = Math.round(istep * c0_0[2] + step * c0_1[2]);
+var color1 = "rgb("+r1+","+g1+","+b1+")";
+
+var r2 = Math.round(istep * c1_0[0] + step * c1_1[0]);
+var g2 = Math.round(istep * c1_0[1] + step * c1_1[1]);
+var b2 = Math.round(istep * c1_0[2] + step * c1_1[2]);
+var color2 = "rgb("+r2+","+g2+","+b2+")";
+
+ $('#gradient').css({
+   background: "-webkit-gradient(linear, left top, right top, from("+color1+"), to("+color2+"))"}).css({
+    background: "-moz-linear-gradient(left, "+color1+" 0%, "+color2+" 100%)"});
+  
+  step += gradientSpeed;
+  if ( step >= 1 )
+  {
+    step %= 1;
+    colorIndices[0] = colorIndices[1];
+    colorIndices[2] = colorIndices[3];
+
+    colorIndices[1] = ( colorIndices[1] + Math.floor( 1 + Math.random() * (colors.length - 1))) % colors.length;
+    colorIndices[3] = ( colorIndices[3] + Math.floor( 1 + Math.random() * (colors.length - 1))) % colors.length;
+    
+  }
+}
+
+setInterval(updateGradient,10);
+
+    // Stonka
+    // 0 - welc
+    // 1 - nyny
+    // 2 - bjbj
+    // 3 - main
+    // 4 - black
+    function run(){
+        const screens = document.querySelectorAll("div");
+        screens[0].classList.toggle("hidden");
+        screens[3].classList.toggle("hidden");
+        var audio = new Audio('res/mix.mp3');
+        audio.play();
+        count();
+    }
+
+    function count(){
+        var timeleft = 3;
+        var downloadTimer = setInterval(function(){
+        if(timeleft <= 0){
+            clearInterval(downloadTimer);
+            const span = document.querySelectorAll("span");
+            span[0].classList.toggle("hidden");
+
+            const grad = document.querySelectorAll("div");
+            grad[4].classList.toggle("hidden");
+            grad[5].classList.toggle("hidden");
+            hmark();
+        }
+        document.getElementById("cdown").innerHTML = timeleft;
+        timeleft--;
+}, 1000);
+}
+    function hmark(){
+        setTimeout(() => creds(), 5000);
+
+    }
+
+    function creds(){
+        const screens = document.querySelectorAll("div");
+        screens[4].classList.toggle("hidden");
+        screens[3].classList.toggle("hidden");
+        screens[2].classList.toggle("hidden");
+        screens[5].classList.toggle("hidden");
+    }
+
+    </script>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        .hidden{
+            display: none !important;
+        }
+        .screen{
+            background-color: black;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+        }
+        .main-screen > *{
+            margin: 0;
+        }
+        .main-screen button{
+            margin: 50px;
+        }
+        h1{
+            font-size: 100px;
+        }
+        .stonka{
+            width: 100vw;
+            height: 100vh;
+            background-image: url("res/076394_r2_940.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        #gradient{
+            opacity: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #cdown{
+            font-size: 100px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            color: white;
+        }
+        .hmark{
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-image: url("res/hitmarker-spam.gif");
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+</head>
+<body onload=checkCookie()>
+    <div class="screen">
+        <h1>Stonka Ziemniaczana</h1><br>
+        <h5 id="1">By 1matux1</h5><br>
+        <h6>For VIP Persona aka. JG :D</h6><br>
+        <button class="play" onclick=run()><svg xmlns="http://www.w3.org/2000/svg" height="48" width="48">
+        <path d="M16 37.85v-28l22 14Zm3-14Zm0 8.55 13.45-8.55L19 15.3Z"/></svg></button>
+    </div>
+    <!-- Spa -->
+    <div class="screen hidden">
+        <h1>Czego ty tu szukasz????? HMMMMM..????</h1>
+    </div>
+    <!-- creds -->
+    <div class="screen hidden">
+        <h5>Koniec!</h5>
+        <img src="res/indeks.jpg" alt="Dziękuję">
+    </div>
+    <!-- stonka -->
+    <div class="stonka hidden">
+        <span id="cdown"></span>
+    </div>
+    <!-- nic -->
+    <div class="hidden" id="gradient" style="width:100vw; height: 100vh;">
+
+    </div>
+
+    <div class="hmark hidden">
+
+    </div>
+</body>
+</html>
